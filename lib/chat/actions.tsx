@@ -147,14 +147,6 @@ async function submitUserMessage(content: string) {
       ...aiState.get().messages.map((message: any) => message.content)
     ]
     const query = chat_history[chat_history.length - 1]
-    // chat_history.pop()
-    // console.log(
-    //   'Request Body: ',
-    //   JSON.stringify({
-    //     chat_history: chat_history,
-    //     query: query
-    //   })
-    // )
     try {
       const endpoint = `${process.env.NEXT_PUBLIC_BACKEND_URL}/code_wizard_endpoint/process`
       const response = await axios.post(endpoint, {
@@ -459,12 +451,6 @@ async function submitUserMessage(content: string) {
   //     }
   //   }
   // })
-
-  const chat_history = [
-    ...aiState.get().messages.map((message: any) => message.content)
-  ]
-
-  console.log('chat_history', chat_history)
 
   return {
     id: nanoid(),
