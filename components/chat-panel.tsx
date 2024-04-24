@@ -36,24 +36,24 @@ export function ChatPanel({
   const exampleMessages = [
     {
       heading: 'What is LangChain?',
-      subheading: 'and what is its primary goal or purpose?',
-      message: `What is LangChain, and what is its primary goal or purpose?`
+      subheading: 'and what is RAG?',
+      message: 'What is LangChain, and what is RAG?'
     },
     {
-      heading: 'What are the use cases of Langchain?',
-      subheading: 'And what are (Q&A) chatbots?',
-      message:
-        'What are the use cases of Langchain and what are (Q&A) chatbots?'
+      heading: 'How to extract structured output?',
+      subheading: 'And what are output parsers?',
+      message: 'How to extract structured output and what are output parsers?'
     },
     {
-      heading: 'What is streaming in Langchain?',
-      subheading: 'And how can I implement it?',
-      message: `What is streaming in Langchain and how can I implement it?`
+      heading: 'What are QA chatbots?',
+      subheading: 'And how can I implement it in detail?',
+      message: 'What are QA chatbots and how can I implement it in detail?'
     },
     {
       heading: 'What is LCEL?',
-      subheading: `And what are the Advantages of LCEL over Langchain`,
-      message: `What is LCEL? and what are the Advantages of LCEL over Langchain`
+      subheading: 'And what are the Advantages of LCEL over Langchain',
+      message:
+        'What is LCEL? and what are the Advantages of LCEL over Langchain'
     }
   ]
 
