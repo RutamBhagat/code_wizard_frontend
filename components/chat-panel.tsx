@@ -35,24 +35,25 @@ export function ChatPanel({
 
   const exampleMessages = [
     {
-      heading: 'What are the',
-      subheading: 'trending memecoins today?',
-      message: `What are the trending memecoins today?`
+      heading: 'What is LangChain?',
+      subheading: 'and what is its primary goal or purpose?',
+      message: `What is LangChain, and what is its primary goal or purpose?`
     },
     {
-      heading: 'What is the price of',
-      subheading: '$DOGE right now?',
-      message: 'What is the price of $DOGE right now?'
+      heading: 'What are the use cases of Langchain?',
+      subheading: 'And what are (Q&A) chatbots?',
+      message:
+        'What are the use cases of Langchain and what are (Q&A) chatbots?'
     },
     {
-      heading: 'I would like to buy',
-      subheading: '42 $DOGE',
-      message: `I would like to buy 42 $DOGE`
+      heading: 'What is streaming in Langchain?',
+      subheading: 'And how can I implement it?',
+      message: `What is streaming in Langchain and how can I implement it?`
     },
     {
-      heading: 'What are some',
-      subheading: `recent events about $DOGE?`,
-      message: `What are some recent events about $DOGE?`
+      heading: 'What is LCEL?',
+      subheading: `And what are the Advantages of LCEL over Langchain`,
+      message: `What is LCEL? and what are the Advantages of LCEL over Langchain`
     }
   ]
 
