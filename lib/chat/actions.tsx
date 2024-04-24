@@ -35,6 +35,7 @@ import { saveChat } from '@/app/actions'
 import { SpinnerMessage, UserMessage } from '@/components/stocks/message'
 import { Chat } from '@/lib/types'
 import { auth } from '@/auth'
+import axios from 'axios'
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY || ''
@@ -141,6 +142,57 @@ async function submitUserMessage(content: string) {
   let textStream: undefined | ReturnType<typeof createStreamableValue<string>>
   let textNode: undefined | React.ReactNode
 
+  async function submitData() {
+    const chat_history = [
+      ...aiState.get().messages.map((message: any) => ({
+        role: message.role,
+        content: message.content,
+        name: message.name
+      }))
+    ]
+    const query = chat_history[chat_history.length - 1].content
+    // chat_history.pop()
+    console.log(
+      'Request Body: ',
+      JSON.stringify({
+        chat_history: chat_history,
+        query: query
+      })
+    )
+    try {
+      const endpoint = `${process.env.NEXT_PUBLIC_BACKEND_URL}/code_wizard_endpoint/process`
+      const response = await axios.post(endpoint, {
+        chat_history: chat_history,
+        query: query
+      })
+      return response.data // Assuming you want to return the response data
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        // Handle Axios errors
+        console.error('Axios error:', error.message)
+        if (error.response) {
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
+          console.error('Error response:', error.response.data)
+          console.error('Error status:', error.response.status)
+          console.error('Error headers:', error.response.headers)
+        } else if (error.request) {
+          // The request was made but no response was received
+          console.error('Error request:', error.request)
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          console.error('Error message:', error.message)
+        }
+      } else {
+        // Handle other types of errors
+        console.error('Other error:', error.message)
+      }
+      throw error // Rethrow the error if you want to handle it further up the call stack
+    }
+  }
+
+  const ui = await submitData()
+
   //   const ui = render({
   //     model: 'gpt-3.5-turbo',
   //     provider: openai,
@@ -149,13 +201,38 @@ async function submitUserMessage(content: string) {
   //       {
   //         role: 'system',
   //         content: `\
-  // You are a conversational AI assistant.`
+  // You are a stock trading conversation bot and you can help users buy stocks, step by step.
+  // You and the user can discuss stock prices and the user can adjust the amount of stocks they want to buy, or place an order, in the UI.
+
+  // Messages inside [] means that it's a UI element or a user event. For example:
+  // - "[Price of AAPL = 100]" means that an interface of the stock price of AAPL is shown to the user.
+  // - "[User has changed the amount of AAPL to 10]" means that the user has changed the amount of AAPL to 10 in the UI.
+
+  // If the user requests purchasing a stock, call \`show_stock_purchase_ui\` to show the purchase UI.
+  // If the user just wants the price, call \`show_stock_price\` to show the price.
+  // If you want to show trending stocks, call \`list_stocks\`.
+  // If you want to show events, call \`get_events\`.
+  // If the user wants to sell stock, or complete another impossible task, respond that you are a demo and cannot do that.
+
+  // Besides that, you can also chat with users and do some calculations if needed.`
   //       },
-  //       ...aiState.get().messages.map((message: any) => ({
-  //         role: message.role,
-  //         content: message.content,
-  //         name: message.name
-  //       }))
+  //       ...aiState
+  //         .get()
+  //         .messages.map((message: any, index: number, messages: any[]) => {
+  //           const isLastMessage = index === messages.length - 1
+  //           const messageObject = {
+  //             role: message.role,
+  //             content: message.content,
+  //             name: message.name
+  //           }
+
+  //           if (isLastMessage) {
+  //             console.log('Last message:')
+  //             console.log(JSON.stringify(messageObject, null, 2))
+  //           }
+
+  //           return messageObject
+  //         })
   //     ],
   //     text: ({ content, done, delta }) => {
   //       if (!textStream) {
@@ -376,7 +453,7 @@ async function submitUserMessage(content: string) {
 
   return {
     id: nanoid(),
-    display: 'THIS IS A TAMPERED RESPONSE'
+    display: ui
   }
 }
 
