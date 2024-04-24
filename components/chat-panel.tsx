@@ -36,8 +36,9 @@ export function ChatPanel({
   const exampleMessages = [
     {
       heading: 'What is LangChain?',
-      subheading: 'and what is RAG?',
-      message: 'What is LangChain, and what is RAG?'
+      subheading: 'and what are the several chat models it supports',
+      message:
+        'What is LangChain, and what are the several chat models it supports'
     },
     {
       heading: 'How to extract structured output?',
@@ -45,15 +46,14 @@ export function ChatPanel({
       message: 'How to extract structured output and what are output parsers?'
     },
     {
-      heading: 'What are QA chatbots?',
-      subheading: 'And how can I implement it in detail?',
-      message: 'What are QA chatbots and how can I implement it in detail?'
+      heading: 'What is Retrieval QA chain?',
+      subheading: 'explain to me in detail',
+      message: 'What is Retrieval QA chain? Explain to me in detail'
     },
     {
-      heading: 'What is LCEL?',
-      subheading: 'And what are the Advantages of LCEL over Langchain',
-      message:
-        'What is LCEL? and what are the Advantages of LCEL over Langchain'
+      heading: 'What are different types of text splitters',
+      subheading: 'explain in detail',
+      message: 'What are different types of text splitters explain in detail'
     }
   ]
 
