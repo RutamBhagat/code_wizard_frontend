@@ -35,25 +35,38 @@ export function ChatPanel({
 
   const exampleMessages = [
     {
-      heading: 'What is LangChain?',
-      subheading: 'and what are the several chat models it supports',
+      heading: 'LangChain Framework Overview',
+      subheading: 'What is the purpose of the LangChain framework?',
+      message: 'What is the purpose of the LangChain framework?'
+    },
+    {
+      heading: 'What is RAG?',
+      subheading: 'What is Retrieval Augmented Generation (RAG)?',
+      message: 'What is Retrieval Augmented Generation (RAG)?'
+    },
+    {
+      heading: 'Extracting structured output',
+      subheading:
+        'What are the three broad approaches for information extraction using Large Language Models (LLMs)?',
       message:
-        'What is LangChain, and what are the several chat models it supports'
+        'What are the three broad approaches for information extraction using Large Language Models (LLMs)?'
     },
     {
-      heading: 'How to extract structured output?',
-      subheading: 'And what are output parsers?',
-      message: 'How to extract structured output and what are output parsers?'
+      heading: 'Chatbots Overview',
+      subheading: 'What are the core features of chatbots?',
+      message: 'What are the core features of chatbots?'
     },
     {
-      heading: 'What is Retrieval QA chain?',
-      subheading: 'explain to me in detail',
-      message: 'What is Retrieval QA chain? Explain to me in detail'
+      heading: 'Tool Use and Agents',
+      subheading: 'What are the two main ways to use tools in LangChain?',
+      message: 'What are the two main ways to use tools in LangChain?'
     },
     {
-      heading: 'What are different types of text splitters',
-      subheading: 'explain in detail',
-      message: 'What are different types of text splitters explain in detail'
+      heading: 'Advantages of LCEL',
+      subheading:
+        'What are the key features of LCEL that make it beneficial for building apps with LLMs?',
+      message:
+        'What are the key features of LCEL that make it beneficial for building apps with LLMs?'
     }
   ]
 
