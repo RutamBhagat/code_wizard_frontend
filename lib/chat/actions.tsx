@@ -500,6 +500,7 @@ export const AI = createAI<AIState, UIState>({
       return
     }
   },
+  // @ts-ignore
   unstable_onSetAIState: async ({ state, done }) => {
     'use server'
 
