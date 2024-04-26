@@ -186,6 +186,7 @@ async function submitUserMessage(content: string) {
         }
       } else {
         // Handle other types of errors
+        // @ts-ignore
         console.error('Other error:', error.message)
       }
       throw error // Rethrow the error if you want to handle it further up the call stack
