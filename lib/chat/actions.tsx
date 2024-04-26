@@ -483,6 +483,7 @@ export const AI = createAI<AIState, UIState>({
   },
   initialUIState: [],
   initialAIState: { chatId: nanoid(), messages: [] },
+  // @ts-ignore
   unstable_onGetUIState: async () => {
     'use server'
 
