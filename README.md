@@ -4,6 +4,10 @@ Code Wizard is a super cool AI chatbot that helps you learn and use the LangChai
 
 **Link to project:** https://code-wizard-frontend.vercel.app/
 
+**Frontend Repo:** [https://code-wizard-frontend.vercel.app/](https://github.com/RutamBhagat/code_wizard_frontend)
+
+**Backend Repo:** [https://code-wizard-frontend.vercel.app/](https://github.com/RutamBhagat/code_wizard_backend)
+
 
 https://github.com/RutamBhagat/code_wizard_frontend/assets/72187009/353ced90-f408-44ae-b633-c30f20dbd28f
 
@@ -49,4 +53,3 @@ Check out these example conversations with Code Wizard:
 
 **Explaining LangChain Expression Language:**
 ![Screenshot 2024-04-27 095430](https://github.com/RutamBhagat/code_wizard_backend/assets/72187009/fb16a35e-d619-4332-a3c1-3cc211069c1f)
-
