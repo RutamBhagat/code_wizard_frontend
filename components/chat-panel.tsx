@@ -45,21 +45,9 @@ export function ChatPanel({
       message: 'What is Retrieval Augmented Generation (RAG)?'
     },
     {
-      heading: 'Extracting structured output',
-      subheading:
-        'What are the three broad approaches for information extraction using Large Language Models (LLMs)?',
-      message:
-        'What are the three broad approaches for information extraction using Large Language Models (LLMs)?'
-    },
-    {
       heading: 'Chatbots Overview',
       subheading: 'What are the core features of chatbots?',
       message: 'What are the core features of chatbots?'
-    },
-    {
-      heading: 'Tool Use and Agents',
-      subheading: 'What are the two main ways to use tools in LangChain?',
-      message: 'What are the two main ways to use tools in LangChain?'
     },
     {
       heading: 'Advantages of LCEL',
