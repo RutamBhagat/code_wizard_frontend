@@ -143,15 +143,12 @@ async function submitUserMessage(content: string) {
   let textNode: undefined | React.ReactNode
 
   async function submitData() {
-    const chat_history = [
-      ...aiState.get().messages.map((message: any) => message.content)
-    ]
-    const query = chat_history[chat_history.length - 1]
+    const chat_history = aiState.get().messages
+    console.log('Chat History: ', chat_history)
     try {
-      const endpoint = `${process.env.NEXT_PUBLIC_BACKEND_URL}/code_wizard_endpoint/process`
+      const endpoint = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/code_wizard`
       const response = await axios.post(endpoint, {
-        chat_history: chat_history,
-        query: query
+        chat_history: chat_history
       })
       const content = response.data
       const ui = <BotMessage content={content} />
