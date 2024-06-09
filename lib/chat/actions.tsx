@@ -151,7 +151,8 @@ async function submitUserMessage(content: string) {
         chat_history: chat_history
       })
       const content = response.data
-      const ui = <BotMessage content={content} />
+      console.log('Content Generation: ', content.generation)
+      const ui = <BotMessage content={content.generation} />
       aiState.done({
         ...aiState.get(),
         messages: [
@@ -159,7 +160,7 @@ async function submitUserMessage(content: string) {
           {
             id: nanoid(),
             role: 'assistant',
-            content: content
+            content: content.generation
           }
         ]
       })
