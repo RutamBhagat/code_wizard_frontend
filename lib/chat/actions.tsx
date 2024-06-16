@@ -3,39 +3,33 @@ import 'server-only'
 import {
   createAI,
   createStreamableUI,
-  getMutableAIState,
+  createStreamableValue,
   getAIState,
-  render,
-  createStreamableValue
+  getMutableAIState
 } from 'ai/rsc'
+import axios from 'axios'
 import OpenAI from 'openai'
 
+import { saveChat } from '@/app/actions'
+import { auth } from '@/auth'
 import {
-  spinner,
   BotCard,
   BotMessage,
-  SystemMessage,
+  Purchase,
+  spinner,
   Stock,
-  Purchase
+  SystemMessage
 } from '@/components/stocks'
-
-import { z } from 'zod'
-import { EventsSkeleton } from '@/components/stocks/events-skeleton'
 import { Events } from '@/components/stocks/events'
-import { StocksSkeleton } from '@/components/stocks/stocks-skeleton'
+import { UserMessage } from '@/components/stocks/message'
 import { Stocks } from '@/components/stocks/stocks'
-import { StockSkeleton } from '@/components/stocks/stock-skeleton'
+import { Chat } from '@/lib/types'
 import {
   formatNumber,
+  nanoid,
   runAsyncFnWithoutBlocking,
-  sleep,
-  nanoid
+  sleep
 } from '@/lib/utils'
-import { saveChat } from '@/app/actions'
-import { SpinnerMessage, UserMessage } from '@/components/stocks/message'
-import { Chat } from '@/lib/types'
-import { auth } from '@/auth'
-import axios from 'axios'
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY || ''
@@ -143,20 +137,37 @@ async function submitUserMessage(content: string) {
   let textNode: undefined | React.ReactNode
 
   async function submitData() {
+    const chat_id = aiState.get().chatId
     const chat_history = aiState.get().messages
-    console.log('Chat History: ', chat_history)
+    const question = chat_history[chat_history.length - 1].content
+
+    // Display the spinner message initially
+    aiState.done({
+      ...aiState.get(),
+      messages: [
+        ...aiState.get().messages,
+        {
+          id: nanoid(),
+          role: 'assistant',
+          content: 'Loading...' // Replace the JSX element with a string
+        }
+      ]
+    })
+
     try {
       const endpoint = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/code_wizard`
       const response = await axios.post(endpoint, {
-        chat_history: chat_history
+        chat_id: chat_id,
+        question: question
       })
       const content = response.data
       console.log('Content Generation: ', content.generation)
-      const ui = <BotMessage content={content.generation} />
+
+      // Replace the spinner message with the actual content
       aiState.done({
         ...aiState.get(),
         messages: [
-          ...aiState.get().messages,
+          ...aiState.get().messages.slice(0, -1), // Remove the spinner message
           {
             id: nanoid(),
             role: 'assistant',
@@ -164,8 +175,12 @@ async function submitUserMessage(content: string) {
           }
         ]
       })
+
+      const ui = <BotMessage content={content.generation} />
       return ui
     } catch (error) {
+      let errorMessage = 'An error occurred while processing your request.'
+
       if (axios.isAxiosError(error)) {
         // Handle Axios errors
         console.error('Axios error:', error.message)
@@ -175,22 +190,44 @@ async function submitUserMessage(content: string) {
           console.error('Error response:', error.response.data)
           console.error('Error status:', error.response.status)
           console.error('Error headers:', error.response.headers)
+
+          // Update the error message with more specific information
+          errorMessage = `Server responded with status ${error.response.status}: ${error.response.data.message}`
         } else if (error.request) {
           // The request was made but no response was received
           console.error('Error request:', error.request)
+
+          // Update the error message with more specific information
+          errorMessage = 'No response received from the server.'
         } else {
           // Something happened in setting up the request that triggered an Error
           console.error('Error message:', error.message)
+
+          // Update the error message with more specific information
+          errorMessage = `Error setting up the request: ${error.message}`
         }
       } else {
         // Handle other types of errors
         // @ts-ignore
         console.error('Other error:', error.message)
       }
+
+      // Replace the spinner message with the error message
+      aiState.done({
+        ...aiState.get(),
+        messages: [
+          ...aiState.get().messages.slice(0, -1), // Remove the spinner message
+          {
+            id: nanoid(),
+            role: 'assistant',
+            content: errorMessage
+          }
+        ]
+      })
+
       throw error // Rethrow the error if you want to handle it further up the call stack
     }
   }
-
   const ui2 = await submitData()
 
   // const ui = render({
