@@ -1,12 +1,14 @@
-import { GeistSans } from 'geist/font/sans'
-import { GeistMono } from 'geist/font/mono'
-
 import '@/app/globals.css'
-import { cn } from '@/lib/utils'
-import { TailwindIndicator } from '@/components/tailwind-indicator'
-import { Providers } from '@/components/providers'
+
+import axios from 'axios'
+import { GeistMono } from 'geist/font/mono'
+import { GeistSans } from 'geist/font/sans'
+
 import { Header } from '@/components/header'
+import { Providers } from '@/components/providers'
+import { TailwindIndicator } from '@/components/tailwind-indicator'
 import { Toaster } from '@/components/ui/sonner'
+import { cn } from '@/lib/utils'
 
 export const metadata = {
   metadataBase: process.env.VERCEL_URL
@@ -35,7 +37,10 @@ interface RootLayoutProps {
   children: React.ReactNode
 }
 
-export default function RootLayout({ children }: RootLayoutProps) {
+export default async function RootLayout({ children }: RootLayoutProps) {
+  // This is to lessen the effect of the initial page load due to cold start of fastapi backend on Render
+  const endpoint = `${process.env.NEXT_PUBLIC_BACKEND_URL}/health_check`
+  const response = await axios.get(endpoint)
   return (
     <html lang="en" suppressHydrationWarning>
       <body
