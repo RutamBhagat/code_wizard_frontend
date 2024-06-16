@@ -27,11 +27,11 @@ export function EmptyScreen() {
           Welcome to Code Wizard: A LangChain Documentation AI Chatbot!
         </h1>
         <p className="leading-normal text-muted-foreground">
-          Your casual AI pal for all things LangChain! This handy chatbot is
-          built with Next.js, FastAPI, LangChain, and a local Llama 3 model to
-          guide you through the LangChain docs. Whether you're a newbie or a
-          pro, just ask Code Wizard about any LangChain concept or code, and
-          it'll break it down in an easy-to-understand way
+          Your AI buddy for all things LangChain! This handy chatbot is built
+          with Next.js, FastAPI, LangChain, and a local Llama 3 model to guide
+          you through the LangChain docs. Whether you're a newbie or a pro, just
+          ask Code Wizard about any LangChain concept or code, and it'll break
+          it down in an easy-to-understand way
         </p>
       </div>
     </div>
