@@ -1,9 +1,6 @@
 {
   "functions": {
-    "components/chat-panel.tsx": {
-      "maxDuration": 60
-    },
-    "components/prompt-form.tsx": {
+    "app/(chat)/page.tsx": {
       "maxDuration": 60
     }
   }
