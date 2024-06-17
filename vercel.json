@@ -1,0 +1,10 @@
+{
+  "functions": {
+    "components/chat-panel.tsx": {
+      "maxDuration": 60
+    },
+    "components/prompt-form.tsx": {
+      "maxDuration": 60
+    }
+  }
+}

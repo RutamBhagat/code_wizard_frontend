@@ -1,15 +1,17 @@
 import * as React from 'react'
 
-import { shareChat } from '@/app/actions'
-import { Button } from '@/components/ui/button'
-import { PromptForm } from '@/components/prompt-form'
-import { ButtonScrollToBottom } from '@/components/button-scroll-to-bottom'
-import { IconShare } from '@/components/ui/icons'
-import { ChatShareDialog } from '@/components/chat-share-dialog'
-import { useAIState, useActions, useUIState } from 'ai/rsc'
-import type { AI } from '@/lib/chat/actions'
+import { useActions, useAIState, useUIState } from 'ai/rsc'
 import { nanoid } from 'nanoid'
-import { UserMessage } from './stocks/message'
+
+import { shareChat } from '@/app/actions'
+import { ButtonScrollToBottom } from '@/components/button-scroll-to-bottom'
+import { ChatShareDialog } from '@/components/chat-share-dialog'
+import { PromptForm } from '@/components/prompt-form'
+import { Button } from '@/components/ui/button'
+import { IconShare } from '@/components/ui/icons'
+import type { AI } from '@/lib/chat/actions'
+
+import { SpinnerMessage, UserMessage } from './stocks/message'
 
 export interface ChatPanelProps {
   id?: string
@@ -75,6 +77,7 @@ export function ChatPanel({
                   index > 1 && 'hidden md:block'
                 }`}
                 onClick={async () => {
+                  // Add the user message to the current messages
                   setMessages(currentMessages => [
                     ...currentMessages,
                     {
@@ -83,14 +86,28 @@ export function ChatPanel({
                     }
                   ])
 
+                  // Add a spinner message to the current messages
+                  const loadingMessage = {
+                    id: nanoid(),
+                    display: <SpinnerMessage />
+                  }
+                  setMessages(currentMessages => [
+                    ...currentMessages,
+                    loadingMessage
+                  ])
+
+                  // Submit the user message and wait for the response
                   const responseMessage = await submitUserMessage(
                     example.message
                   )
 
-                  setMessages(currentMessages => [
-                    ...currentMessages,
-                    responseMessage
-                  ])
+                  // Remove the last message (the spinner message) and add the response message to the current messages
+                  setMessages(currentMessages => {
+                    const updatedMessages = [...currentMessages]
+                    updatedMessages.pop()
+                    updatedMessages.push(responseMessage)
+                    return updatedMessages
+                  })
                 }}
               >
                 <div className="text-sm font-semibold">{example.heading}</div>

@@ -5,7 +5,7 @@ import Textarea from 'react-textarea-autosize'
 
 import { useActions, useUIState } from 'ai/rsc'
 
-import { UserMessage } from './stocks/message'
+import { SpinnerMessage, UserMessage } from './stocks/message'
 import { type AI } from '@/lib/chat/actions'
 import { Button } from '@/components/ui/button'
 import { IconArrowElbow, IconPlus } from '@/components/ui/icons'
@@ -61,9 +61,23 @@ export function PromptForm({
           }
         ])
 
+        // Add a spinner message to the current messages
+        const loadingMessage = {
+          id: nanoid(),
+          display: <SpinnerMessage />
+        }
+        setMessages(currentMessages => [...currentMessages, loadingMessage])
+
         // Submit and get response message
         const responseMessage = await submitUserMessage(value)
-        setMessages(currentMessages => [...currentMessages, responseMessage])
+
+        // Remove the last message (the spinner message) and add the response message to the current messages
+        setMessages(currentMessages => {
+          const updatedMessages = [...currentMessages]
+          updatedMessages.pop()
+          updatedMessages.push(responseMessage)
+          return updatedMessages
+        })
       }}
     >
       <div className="relative flex max-h-60 w-full grow flex-col overflow-hidden bg-background px-8 sm:rounded-md sm:border sm:px-12">
