@@ -38,9 +38,6 @@ interface RootLayoutProps {
 }
 
 export default async function RootLayout({ children }: RootLayoutProps) {
-  // This is to lessen the effect of the initial page load due to cold start of fastapi backend on Render
-  const endpoint = `${process.env.NEXT_PUBLIC_BACKEND_URL}/health_check`
-  const response = await axios.get(endpoint)
   return (
     <html lang="en" suppressHydrationWarning>
       <body
