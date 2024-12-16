@@ -29,6 +29,7 @@ import {
   runAsyncFnWithoutBlocking,
   sleep
 } from '@/lib/utils'
+import { Client } from "@langchain/langgraph-sdk";
 
 async function confirmPurchase(symbol: string, price: number, amount: number) {
   'use server'
@@ -132,7 +133,7 @@ async function submitUserMessage(content: string) {
   let textNode: undefined | React.ReactNode
 
   async function submitData() {
-    const chat_id = aiState.get().chatId
+    const threadID = aiState.get().chatId
     const chat_history = aiState.get().messages
     const question = chat_history[chat_history.length - 1].content
 
@@ -150,13 +151,30 @@ async function submitUserMessage(content: string) {
     })
 
     try {
-      const endpoint = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/code_wizard`
-      const response = await axios.post(endpoint, {
-        chat_id: chat_id,
-        question: question
-      })
-      const content = response.data
-      console.log('Content Generation: ', content.generation)
+      console.log("THIS IS HITTING")
+      const client = new Client({apiUrl: process.env.NEXT_PUBLIC_BACKEND_URL});
+      const assistantID = "graph";
+      console.log('threadID', threadID)
+      console.log('assistantID', assistantID)
+      console.log('question', question)
+      const streamResponse = client.runs.stream(threadID, assistantID, {
+        input: { question: question },
+        streamMode: "events",
+      });
+
+      const generationArr = []
+      for await (const chunk of streamResponse) {
+        if (
+          chunk.data.event == "on_chat_model_stream" &&
+          chunk.data.metadata.langgraph_node == "generate_node"
+        ) {
+          const newContent = chunk.data.data.chunk.content;
+          generationArr.push(newContent);
+        }
+      }
+      console.log('generationArr', generationArr)
+      const generation = generationArr.join('')
+      console.log('Content Generation: ', generation)
 
       // Replace the spinner message with the actual content
       aiState.done({
@@ -166,12 +184,12 @@ async function submitUserMessage(content: string) {
           {
             id: nanoid(),
             role: 'assistant',
-            content: content.generation
+            content: generation
           }
         ]
       })
 
-      const ui = <BotMessage content={content.generation} />
+      const ui = <BotMessage content={generation} />
       return ui
     } catch (error) {
       const ui = <BotMessage content={JSON.stringify(error)} />
