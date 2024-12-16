@@ -97,7 +97,7 @@ async function submitUserMessage(content: string) {
           // Update streaming content
           aiState.update({
             ...aiState.get(),
-            messages: aiState.get().messages.map((msg: { id: string; }) => 
+            messages: aiState.get().messages.map((msg: Message) => 
               msg.id === initialMessageId 
                 ? { 
                     ...msg, 
@@ -113,7 +113,7 @@ async function submitUserMessage(content: string) {
       // Finalize message
       aiState.update({
         ...aiState.get(),
-        messages: aiState.get().messages.map((msg: { id: string; }) => 
+        messages: aiState.get().messages.map((msg: Message) => 
           msg.id === initialMessageId 
             ? { 
                 ...msg, 
